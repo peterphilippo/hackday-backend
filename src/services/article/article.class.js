@@ -17,14 +17,22 @@ class Service {
 
   async create (data, params) {
     let result = await new Promise((resolve, reject) => {
-      this.ipool.articleSearch({
+      this.ipool.search({
         q: data.keywords,
         types: 'article',
         languages: data.languages ? data.languages : 'EN',
         limit: data.limit ? data.limit : 10
       }, resolve, reject);
     });
-    return result.documents;
+    
+    return result.documents.map(item => {
+      return {
+        title: item.title,
+        leadtext: item.leadtext,
+        url: item.url,
+        picture: (item.pictureReferences && item.pictureReferences.length > 0) ? item.pictureReferences[0].originalImage.url : '',
+      }
+    });
   }
 
   async update (id, data, params) {

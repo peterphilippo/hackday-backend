@@ -11,7 +11,7 @@ class Ipool {
         this.baseUrl = 'https://sandbox-api.ipool.asideas.de/sandbox';
     }
 
-    articleSearch (options, resolve, reject) {
+    search (options, resolve, reject) {
         let url = this.baseUrl + '/api/search'
         let optionsObj = {
             method: 'GET',
