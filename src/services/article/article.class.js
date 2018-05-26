@@ -12,16 +12,16 @@ class Service {
   }
 
   async get (id, params) {
-    return [];
+    return []
   }
 
   async create (data, params) {
     let result = await new Promise((resolve, reject) => {
-      this.ipool.socialSearch({
+      this.ipool.articleSearch({
         q: data.keywords,
+        types: 'article',
         languages: data.languages ? data.languages : 'EN',
-        limit: data.limit ? data.limit : 10,
-        category: ''
+        limit: data.limit ? data.limit : 10
       }, resolve, reject);
     });
     return result.documents;
