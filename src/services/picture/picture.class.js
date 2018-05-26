@@ -12,19 +12,23 @@ class Service {
   }
 
   async get (id, params) {
-    return [];
+    return {
+      id, text: `A new message with ID: ${id}!`
+    };
   }
 
   async create (data, params) {
     let result = await new Promise((resolve, reject) => {
-      this.ipool.socialSearch({
+      this.ipool.search({
         q: data.keywords,
+        types: 'picture',
         languages: data.languages ? data.languages : 'EN',
         limit: data.limit ? data.limit : 10,
-        category: 'TWITTER'
+        sortBy: 'LATESTIMPORTED'
       }, resolve, reject);
     });
-    return result.documents.map(item => item.id.replace('twitter_', ''));
+    
+    return result;
   }
 
   async update (id, data, params) {

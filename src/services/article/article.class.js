@@ -21,7 +21,8 @@ class Service {
         q: data.keywords,
         types: 'article',
         languages: data.languages ? data.languages : 'EN',
-        limit: data.limit ? data.limit : 10
+        limit: data.limit ? data.limit : 10,
+        sortBy: 'LATESTIMPORTED'
       }, resolve, reject);
     });
     
