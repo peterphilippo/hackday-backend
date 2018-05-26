@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const _   = require('lodash');
+const rp  = require('request-promise');
 
 /* eslint-disable no-unused-vars */
 class Service {
@@ -18,7 +19,38 @@ class Service {
     };
   }
 
-  async create(data, params) {
+  async create() {
+
+  }
+
+  async GoogleSentiment(data, params) {
+    let testString = 'Boban is a nice guy and he is really good looking. And he is pretty good at playing music with his yellow guitar. Boban is really bad at singing although he thinks he is good. He also likes helping girls in trouble.';
+
+    let testResponse = await rp({
+      method : 'POST',
+      uri    : 'https://content-language.googleapis.com/v1/documents:analyzeSentiment',
+      headers: {
+        'referer'  : 'https://content-language.googleapis.com/static/proxy.html?usegapi=1&jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.en.oKdW7bnNCkA.O%2Fm%3D__features__%2Fam%3DQQE%2Frt%3Dj%2Fd%3D1%2Frs%3DAGLTcCN21chCqe-J_uS07QYyqnqbGguhpg',
+        'x-referer': 'https://developers.google.com'
+      },
+      qs     : {
+        key: 'AIzaSyD-a9IF8KKYgoC3cpgS-Al7hLQDbugrDcw',
+        alt: 'json'
+      },
+      body   : {
+        document: {
+          content : testString,
+          language: 'en',
+          type    : 'PLAIN_TEXT'
+        }
+      },
+      json   : true
+    });
+
+    return testResponse;
+  }
+
+  async AWSComprehendEntities(data, params) {
     // get text parameter from request
     let text = data.text;
 
