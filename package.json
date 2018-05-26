@@ -25,6 +25,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
+    "start-dev": "nodemon src/",
     "mocha": "mocha test/ --recursive --exit"
   },
   "dependencies": {
@@ -39,8 +40,10 @@
     "winston": "^2.4.0"
   },
   "devDependencies": {
+    "@feathersjs/cli": "^3.6.4",
     "eslint": "^4.19.1",
     "mocha": "^4.0.1",
+    "nodemon": "^1.17.5",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
   }
