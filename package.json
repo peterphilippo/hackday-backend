@@ -25,7 +25,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
-    "start-dev": "nodemon src/",
+    "start-dev": "nodemon --inspect src/",
     "mocha": "mocha test/ --recursive --exit"
   },
   "dependencies": {
@@ -33,9 +33,11 @@
     "@feathersjs/errors": "^3.3.0",
     "@feathersjs/express": "^1.2.2",
     "@feathersjs/feathers": "^3.1.5",
+    "aws-sdk": "^2.247.1",
     "compression": "^1.7.2",
     "cors": "^2.8.4",
     "helmet": "^3.9.0",
+    "lodash": "^4.17.10",
     "serve-favicon": "^2.4.5",
     "winston": "^2.4.0"
   },
