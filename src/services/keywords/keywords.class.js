@@ -1,4 +1,5 @@
 const AWS = require('aws-sdk');
+const _   = require('lodash');
 
 /* eslint-disable no-unused-vars */
 class Service {
@@ -24,8 +25,8 @@ class Service {
     let comprehend = new AWS.Comprehend({
       apiVersion     : '2017-11-27',
       endpoint       : 'https://comprehend.eu-west-1.amazonaws.com',
-      secretAccessKey: 'cqh7SHSCO1/xZNtQFdyIlnm8+Zd8zMQx+UD/XiWb',
-      accessKeyId    : 'AKIAIQWIIJ2MU6C7WSWA',
+      secretAccessKey: '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',
+      accessKeyId    : 'AKIAJYYSXBHOIFME33WQ',
       region         : 'eu-west-1'
     });
 
@@ -34,13 +35,30 @@ class Service {
       Text        : text
     };
 
-    let proba = await new Promise((resolve) => {
-      comprehend.detectEntities(comprehendParams, function (err, data) {
-        resolve(data);
+    try {
+      let response = await new Promise((resolve, reject) => {
+        // fetch entities from text
+        comprehend.detectEntities(comprehendParams, function (err, data) {
+          if(err) reject(err);
+          resolve(data);
+        });
       });
-    });
 
-    return JSON.stringify(proba);
+      // extract only important entities from text
+      // and entities that have a score higher than 0.8
+      // i.e. PERSON, LOCATION, ORGANIZATION, COMMERCIAL_ITEM, EVENT, TITLE
+      let importantEntities = new Set(['PERSON', 'LOCATION', 'ORGANIZATION', 'COMMERCIAL_ITEM', 'EVENT', 'TITLE']);
+      let filteredEntities  = _.filter(response.Entities, (entity) => {
+        return importantEntities.has(entity.Type) && entity.Score > 0.8;
+      });
+
+      // return the filtered response
+      return filteredEntities.map((entity) => {
+        return entity.Text;
+      });
+    } catch (error) {
+      return error;
+    }
   }
 
   async update(id, data, params) {
