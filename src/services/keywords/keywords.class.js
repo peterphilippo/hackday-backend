@@ -19,8 +19,43 @@ class Service {
     };
   }
 
-  async create() {
+  async create(data, params) {
+    // get text parameter from request
+    let text = data.text;
 
+    let apiResponse = await rp({
+      method : 'POST',
+      uri    : 'https://content-language.googleapis.com/v1/documents:analyzeEntities',
+      headers: {
+        'referer'  : 'https://content-language.googleapis.com/static/proxy.html?usegapi=1&jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.en.oKdW7bnNCkA.O%2Fm%3D__features__%2Fam%3DQQE%2Frt%3Dj%2Fd%3D1%2Frs%3DAGLTcCN21chCqe-J_uS07QYyqnqbGguhpg',
+        'x-referer': 'https://developers.google.com'
+      },
+      qs     : {
+        key: 'AIzaSyD-a9IF8KKYgoC3cpgS-Al7hLQDbugrDcw',
+        alt: 'json'
+      },
+      body   : {
+        document: {
+          content : text,
+          language: 'en',
+          type    : 'PLAIN_TEXT'
+        }
+      },
+      json   : true
+    });
+
+    // extract only important entities from text
+    // and entities that have a salience higher than 0.01
+    // i.e. PERSON, LOCATION, ORGANIZATION, COMMERCIAL_ITEM, EVENT, TITLE
+    let importantEntities = new Set(['PERSON', 'LOCATION', 'ORGANIZATION', 'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD']);
+    let filteredEntities  = _.filter(apiResponse.entities, (entity) => {
+      return importantEntities.has(entity.type) && entity.salience > 0.01;
+    });
+
+    // return the filtered response
+    return filteredEntities.map((entity) => {
+      return entity.name;
+    });
   }
 
   async GoogleSentiment(data, params) {
