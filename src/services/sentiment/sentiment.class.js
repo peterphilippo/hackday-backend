@@ -2,7 +2,7 @@
 const rp  = require('request-promise');
 
 class Service {
-  
+
 
   constructor (options) {
     this.options = options || {};
@@ -22,7 +22,7 @@ class Service {
 
   async create (data, params) {
 
-    let textString = data.text;
+    let textString = data.text.join(' ');
 
 
     let testResponse = await rp({
@@ -46,9 +46,21 @@ class Service {
       json   : true
     });
 
-    return testResponse;
+    let sentiment = testResponse.documentSentiment.score;
+    let sentimentPercentage;
+
+    if(sentiment < 0)
+      sentimentPercentage = (Math.abs(sentiment) * 100) / 2;
+
+    if(sentiment > 0)
+      sentimentPercentage = sentiment * 100;
+
+    if(sentiment === 0)
+      sentimentPercentage = 50;
+
+    return sentimentPercentage;
   }
-    
+
   async update (id, data, params) {
     return data;
   }
