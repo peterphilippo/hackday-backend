@@ -12,7 +12,7 @@ class Service {
   }
 
   async get (id, params) {
-    return []
+    return [];
   }
 
   async create (data, params) {
@@ -22,17 +22,18 @@ class Service {
         types: 'article',
         languages: data.languages ? data.languages : 'EN',
         limit: data.limit ? data.limit : 10,
-        sortBy: 'LATESTIMPORTED'
+        sortBy: 'QRELEVANCE',
+        order: 'DESC'
       }, resolve, reject);
     });
-    
+
     return result.documents.map(item => {
       return {
         title: item.title,
         leadtext: item.leadtext,
         url: item.url,
         picture: (item.pictureReferences && item.pictureReferences.length > 0) ? item.pictureReferences[0].originalImage.url : '',
-      }
+      };
     });
   }
 
