@@ -19,7 +19,7 @@ class Service {
 
   async create(data, params) {
     // get text parameter from request
-    let text = data.text.join(' ');
+    let text = data.keywords.join(' ');
 
     var options = {
       method : 'GET',
