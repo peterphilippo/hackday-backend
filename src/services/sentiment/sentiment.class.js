@@ -21,7 +21,6 @@ class Service {
   }
 
   async create (data, params) {
-
     let textString = data.text.join(' ');
 
 

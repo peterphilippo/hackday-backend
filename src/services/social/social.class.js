@@ -18,7 +18,7 @@ class Service {
   async create (data, params) {
     let result = await new Promise((resolve, reject) => {
       this.ipool.socialSearch({
-        q: data.keywords,
+        q: data.keywords.join(' '),
         languages: data.languages ? data.languages : 'EN',
         limit: data.limit ? data.limit : 10,
         category: 'TWITTER'
